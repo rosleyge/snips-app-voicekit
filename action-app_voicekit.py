@@ -34,7 +34,7 @@ class VoiceKit(object):
             self.mqtt_address = MQTT_ADDR
 
         self.relay = grove.grove_relay.Grove(12)
-        self.relay1 = grove.grove_relay.Grove(1)
+        self.relay1 = grove.grove_relay.Grove(5)
         self.temperature_humidity_sensor = grove.grove_temperature_humidity_sensor_sht3x.Grove()
 
         # start listening to MQTT
@@ -63,7 +63,7 @@ class VoiceKit(object):
         time.sleep(0.5)
         self.relay1.off()
         # if need to speak the execution result by tts
-        hermes.publish_start_session_notification(intent_message.site_id, "Party begin hahaha", "")
+        hermes.publish_start_session_notification(intent_message.site_id, "Party begin happy together", "")
         
     def relay_on(self, hermes, intent_message):
         # terminate the session first if not continue
