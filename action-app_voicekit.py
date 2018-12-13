@@ -72,7 +72,7 @@ class VoiceKit(object):
         time.sleep(1.5)
         self.relay1.on()
         # if need to speak the execution result by tts
-        hermes.publish_start_session_notification(intent_message.site_id, "Party begin, Happy together. Hey google, play some popular songs", "")    
+        hermes.publish_start_session_notification(intent_message.site_id, "Party begin,happy together,hey google,play some popular songs", "")    
         
     def takebreak(self, hermes, intent_message):
         # terminate the session first if not continue
@@ -84,7 +84,7 @@ class VoiceKit(object):
         self.relay2.on()
 
         # if need to speak the execution result by tts
-        hermes.publish_start_session_notification(intent_message.site_id, "Welcome back my lord", "")
+        hermes.publish_start_session_notification(intent_message.site_id, "Welcome back, my lord", "")
     
     
     def relay_on(self, hermes, intent_message):
