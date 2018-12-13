@@ -33,8 +33,9 @@ class VoiceKit(object):
             self.config = None
             self.mqtt_address = MQTT_ADDR
 
-        self.relay = grove.grove_relay.Grove(12)
-        self.relay1 = grove.grove_relay.Grove(5)
+        self.relay = grove.grove_relay.Grove(5)
+        self.relay1 = grove.grove_relay.Grove(12)
+        self.relay2 = grove.grove_relay.Grove(13)
         self.temperature_humidity_sensor = grove.grove_temperature_humidity_sensor_sht3x.Grove()
 
         # start listening to MQTT
@@ -47,24 +48,45 @@ class VoiceKit(object):
         
         # action code goes here...
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
-        self.relay.on()
+        self.relay2.on()
+        time.sleep(0.3)
+        hermes.publish_start_session_notification(intent_message.site_id, "Di", "")
+        self.relay2.off()
         time.sleep(0.5)
-        self.relay.off()
+        self.relay2.on()
+        time.sleep(0.3)
+        hermes.publish_start_session_notification(intent_message.site_id, "Di", "")
+        self.relay2.off()
+         time.sleep(0.5)
+        self.relay2.on()
+        time.sleep(0.3)
+        self.relay2.off()
         time.sleep(0.5)
-        self.relay.on()
+        self.relay2.on()
+        time.sleep(0.3)
+        self.relay2.off()
         time.sleep(0.5)
-        self.relay.off()
-        
-        self.relay1.on()
-        time.sleep(0.5)
-        self.relay1.off()
-        time.sleep(0.5)
-        self.relay1.on()
-        time.sleep(0.5)
-        self.relay1.off()
+        self.relay2.on()
+        time.sleep(0.3)
+        self.relay2.off()
         # if need to speak the execution result by tts
         hermes.publish_start_session_notification(intent_message.site_id, "OK Google play some music", "")
+        self.relay1.on()
         
+        
+    def takebreak(self, hermes, intent_message):
+        # terminate the session first if not continue
+        hermes.publish_end_session(intent_message.session_id, "")
+
+        # action code goes here...
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
+        self.relay1.off()
+        self.relay2.on()
+
+        # if need to speak the execution result by tts
+        hermes.publish_start_session_notification(intent_message.site_id, "Relay is off", "")
+    
+    
     def relay_on(self, hermes, intent_message):
         # terminate the session first if not continue
         hermes.publish_end_session(intent_message.session_id, "")
@@ -125,7 +147,8 @@ class VoiceKit(object):
             self.answer_humidity(hermes, intent_message)
         elif coming_intent.find('party-mode') >= 0:
             self.party_mode(hermes, intent_message)
-
+        elif coming_intent.find('takebreak') >= 0:
+            self.takebreak(hermes, intent_message)
     # --> Register callback function and start MQTT
     def start_blocking(self):
         with Hermes(self.mqtt_address) as h:
