@@ -70,7 +70,7 @@ class VoiceKit(object):
         time.sleep(1.5)
         self.relay1.on()
         # if need to speak the execution result by tts
-        hermes.publish_start_session_notification(intent_message.site_id, "hey google, play some songs for party, Party begin", "")    
+        hermes.publish_start_session_notification(intent_message.site_id, "hey google, play some songs for party", "")    
         
     def takebreak(self, hermes, intent_message):
         # terminate the session first if not continue
@@ -107,6 +107,18 @@ class VoiceKit(object):
         self.relay2.off()
         # if need to speak the execution result by tts
         hermes.publish_start_session_notification(intent_message.site_id, "See you", "")
+        
+    def party_stop(self, hermes, intent_message):
+        # terminate the session first if not continue
+        hermes.publish_end_session(intent_message.session_id, "")
+
+        # action code goes here...
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
+        
+        self.relay1.off()
+        self.relay2.off()
+        # if need to speak the execution result by tts
+        hermes.publish_start_session_notification(intent_message.site_id, "hey google, stop", "")
 
     def answer_temperature(self, hermes, intent_message):
         # terminate the session first if not continue
@@ -148,6 +160,8 @@ class VoiceKit(object):
             self.party_mode(hermes, intent_message)
         elif coming_intent.find('takebreak') >= 0:
             self.takebreak(hermes, intent_message)
+        elif coming_intent.find('partystop') >= 0:
+            self.party_stop(hermes, intent_message)
     # --> Register callback function and start MQTT
     def start_blocking(self):
         with Hermes(self.mqtt_address) as h:
