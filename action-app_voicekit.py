@@ -48,16 +48,14 @@ class VoiceKit(object):
         
         # action code goes here...
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
-        self.relay2.on()
-        time.sleep(0.3)
-        
-        self.relay2.off()
-        time.sleep(0.7)
-        self.relay2.on()
-        time.sleep(0.3)
-        
-        self.relay2.off()
-        time.sleep(0.7)
+        #self.relay2.on()
+        #time.sleep(0.3)
+        #self.relay2.off()
+        #time.sleep(0.7)
+        #self.relay2.on()
+        #time.sleep(0.3)        
+        #self.relay2.off()
+        #time.sleep(0.7)
         self.relay2.on()
         time.sleep(0.3)
         self.relay2.off()
@@ -72,7 +70,7 @@ class VoiceKit(object):
         time.sleep(1.5)
         self.relay1.on()
         # if need to speak the execution result by tts
-        hermes.publish_start_session_notification(intent_message.site_id, "Party begin,happy together,hey google,play some popular songs", "")    
+        hermes.publish_start_session_notification(intent_message.site_id, "Party begin, hey google, play some songs for party", "")    
         
     def takebreak(self, hermes, intent_message):
         # terminate the session first if not continue
